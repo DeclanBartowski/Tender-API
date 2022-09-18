@@ -1,0 +1,481 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tender API",
+        "description": "API documentation for Tender API",
+        "contact": {
+            "email": "sidorenkopavelmail@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/",
+            "description": "Tender API"
+        }
+    ],
+    "paths": {
+        "/": {},
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Auth user",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string",
+                                        "example": "admin@admin.com"
+                                    },
+                                    "password": {
+                                        "description": "User password",
+                                        "type": "string",
+                                        "example": "123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "access_token": {
+                                                "type": "string",
+                                                "example": "token"
+                                            },
+                                            "token_type": {
+                                                "type": "string",
+                                                "example": "bearer"
+                                            },
+                                            "expires_in": {
+                                                "type": "integer",
+                                                "example": "3600"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "error": {
+                                                "type": "string",
+                                                "example": "Unauthorized"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tenders": {
+            "get": {
+                "tags": [
+                    "tenders"
+                ],
+                "summary": "Show Tenders",
+                "description": "List Tenders",
+                "operationId": "3854e00b0026616614d5cc836963f470",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Лабороаторная посуда"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2022.01.01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "data": {
+                                                "properties": {
+                                                    "external_id": {
+                                                        "type": "string",
+                                                        "example": "152467180"
+                                                    },
+                                                    "number": {
+                                                        "type": "string",
+                                                        "example": "17660-2"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Закрыто"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Лабороаторная посуда"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "example": "15.08.2022 19:25:14"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "Unauthorized"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "The given data was invalid."
+                                            },
+                                            "errors": {
+                                                "properties": {
+                                                    "date": {
+                                                        "type": "string",
+                                                        "example": "The date does not match the format Y.m.d."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "tenders"
+                ],
+                "summary": "Add Tender",
+                "description": "Add tender",
+                "operationId": "c930fe58c7e740827a68aca95aa82a55",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "external_id": {
+                                        "description": "External ID",
+                                        "type": "integer",
+                                        "example": "152467180"
+                                    },
+                                    "number": {
+                                        "description": "Number tender",
+                                        "type": "string",
+                                        "example": "17660-2"
+                                    },
+                                    "status": {
+                                        "description": "Status tender",
+                                        "type": "string",
+                                        "example": "Закрыто"
+                                    },
+                                    "name": {
+                                        "description": "Name tender",
+                                        "type": "string",
+                                        "example": "Лабороаторная посуда"
+                                    },
+                                    "date": {
+                                        "description": "Date tender",
+                                        "type": "string",
+                                        "example": "15.08.2022 19:25:14"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "data": {
+                                                "properties": {
+                                                    "external_id": {
+                                                        "type": "string",
+                                                        "example": "152467180"
+                                                    },
+                                                    "number": {
+                                                        "type": "string",
+                                                        "example": "17660-2"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Закрыто"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Лабороаторная посуда"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "example": "15.08.2022 19:25:14"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "Unauthorized"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "The given data was invalid."
+                                            },
+                                            "errors": {
+                                                "properties": {
+                                                    "external_id": {
+                                                        "properties": {
+                                                            "": {
+                                                                "type": "string",
+                                                                "example": "The external id has already been taken."
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/tenders/{tender}": {
+            "get": {
+                "tags": [
+                    "tenders"
+                ],
+                "summary": "Show Tender by External_ID",
+                "description": "Get Tender By External ID",
+                "operationId": "dbb74eb496c9fd8c78e892d08b4b340f",
+                "parameters": [
+                    {
+                        "name": "tender",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "152467180"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "data": {
+                                                "properties": {
+                                                    "external_id": {
+                                                        "type": "string",
+                                                        "example": "152467180"
+                                                    },
+                                                    "number": {
+                                                        "type": "string",
+                                                        "example": "17660-2"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "Закрыто"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Лабороаторная посуда"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "example": "15.08.2022 19:25:14"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "Unauthorized"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "message": {
+                                                "type": "string",
+                                                "example": "No query results for model [App\\\\Models\\\\Tender] 1524671802"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
